@@ -19,14 +19,17 @@ public:
 
 private:
 	void clearFrames();
+	void updateFrameWeights();
 
 	// For "Pixel average" mode
 	std::vector<ID2D1Bitmap1*> m_frameHistory;
+	std::vector<float> m_frameWeights;
 
 	// For "Single frame" mode
 	ID2D1Bitmap1* m_previousFrameBitmap = nullptr;
 
 	bool m_lastModeWasPixelAverage = false;
+	size_t m_lastIntensity = 0;
 
 	ValueType usePixelAverage = BoolValue(true);
 	ValueType intensity = FloatValue(5.f);

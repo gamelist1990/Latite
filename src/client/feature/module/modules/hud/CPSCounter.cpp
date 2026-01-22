@@ -21,13 +21,24 @@ std::wstringstream CPSCounter::text(bool isDefault, bool inEditor) {
 	std::wstringstream wss;
 	switch (mode.getSelectedKey()) {
 	case 0:
-		wss << Latite::get().getTimings().getCPSL();
+		{
+			auto mod = Latite::getModuleManager().find("CPSLimiter");
+			wss << (mod && mod->isEnabled() ? Latite::get().getTimings().getAllowedCPSL() : Latite::get().getTimings().getCPSL());
+		}
 		break;
 	case 1:
-		wss << Latite::get().getTimings().getCPSR();
+		{
+			auto mod = Latite::getModuleManager().find("CPSLimiter");
+			wss << (mod && mod->isEnabled() ? Latite::get().getTimings().getAllowedCPSR() : Latite::get().getTimings().getCPSR());
+		}
 		break;
 	case 2:
-		wss << Latite::get().getTimings().getCPSL() << " | " << Latite::get().getTimings().getCPSR();
+		{
+			auto mod = Latite::getModuleManager().find("CPSLimiter");
+			wss << (mod && mod->isEnabled() ? Latite::get().getTimings().getAllowedCPSL() : Latite::get().getTimings().getCPSL())
+			    << " | "
+			    << (mod && mod->isEnabled() ? Latite::get().getTimings().getAllowedCPSR() : Latite::get().getTimings().getCPSR());
+		}
 		break;
 	}
 	return wss;

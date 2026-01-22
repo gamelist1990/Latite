@@ -11,4 +11,3 @@ private:
 	ValueType textCol = ColorValue(1.f, 1.f, 1.f, 1.f);
 	ValueType bgCol = ColorValue(0.f, 0.f, 0.f, 0.5f);
 };
-

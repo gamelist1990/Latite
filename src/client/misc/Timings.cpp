@@ -34,6 +34,10 @@ void Timings::update()
 
 	cpsL = getPerSecond(cpsLV);
 	cpsR = getPerSecond(cpsRV);
+
+	// compute allowed/observed CPS separately
+	allowedCpsL = getPerSecond(allowedCpsLV);
+	allowedCpsR = getPerSecond(allowedCpsRV);
 }
 
 void Timings::onClick(int mb, bool isDown)
@@ -45,3 +49,13 @@ void Timings::onClick(int mb, bool isDown)
 		cpsRV.push_back(std::chrono::high_resolution_clock::now());
 	}
 }
+
+void Timings::onAllowedClick(int mb, bool isDown)
+{
+	if (mb == 1 && isDown) {
+		allowedCpsLV.push_back(std::chrono::high_resolution_clock::now());
+	}
+	else if (mb == 2 && isDown) {
+		allowedCpsRV.push_back(std::chrono::high_resolution_clock::now());
+	}
+} 

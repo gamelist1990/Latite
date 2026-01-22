@@ -39,5 +39,18 @@ private:
 	std::vector<std::chrono::steady_clock::time_point> cpsRV;
 	std::vector<std::chrono::steady_clock::time_point> tpsV;
 
+	// clicks that were actually allowed (after any limiter). CPS display can prefer
+	// these when a CPS limiter is active so the HUD shows effective (enforced) CPS.
+	std::vector<std::chrono::steady_clock::time_point> allowedCpsLV;
+	std::vector<std::chrono::steady_clock::time_point> allowedCpsRV;
+	int allowedCpsL = 0;
+	int allowedCpsR = 0;
+
+public:
+	// Record a click that was allowed by input-path (e.g. CPSLimiter)
+	void onAllowedClick(int mb, bool isDown);
+
+	[[nodiscard]] int getAllowedCPSL() { return allowedCpsL; }
+	[[nodiscard]] int getAllowedCPSR() { return allowedCpsR; }
 };
 

@@ -16,6 +16,7 @@
 #include "modules/game/EnvironmentChanger.h"
 #include "modules/game/TextHotkey.h"
 #include "modules/game/Freelook.h"
+#include "modules/game/CPSLimiter.h"
 #include "modules/game/AutoGG.h"
 
 #include "modules/visual/Fullbright.h"
@@ -23,6 +24,7 @@
 #include "modules/visual/HurtColor.h"
 #include "modules/visual/Hitboxes.h"
 #include "modules/visual/ChunkBorders.h"
+#include "modules/visual/DestroyProgress.h"
 #include "modules/visual/Hitboxes.h"
 #include "modules/visual/BlockOutline.h"
 
@@ -71,12 +73,12 @@ ModuleManager::ModuleManager() {
 	this->items.push_back(std::make_shared<GuiscaleChanger>());
 	this->items.push_back(std::make_shared<DebugInfo>());
 	this->items.push_back(std::make_shared<TabList>());
-	this->items.push_back(std::make_shared<Keystrokes>());
-	this->items.push_back(std::make_shared<CinematicCamera>());
+	this->items.push_back(std::make_shared<Keystrokes>());this->items.push_back(std::make_shared<CPSLimiter>());	this->items.push_back(std::make_shared<CinematicCamera>());
 	this->items.push_back(std::make_shared<HealthWarning>());
 	this->items.push_back(std::make_shared<BreakIndicator>());
 	this->items.push_back(std::make_shared<BehindYou>());
 	this->items.push_back(std::make_shared<ChunkBorders>());
+	this->items.push_back(std::make_shared<DestroyProgress>());
 	this->items.push_back(std::make_shared<ArmorHUD>());
 	this->items.push_back(std::make_shared<MovablePaperdoll>());
 	this->items.push_back(std::make_shared<Hitboxes>());

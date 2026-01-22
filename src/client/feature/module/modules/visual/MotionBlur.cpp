@@ -25,6 +25,33 @@ void MotionBlur::clearFrames() {
     }
 	
     m_frameHistory.clear();
+    m_frameWeights.clear();
+}
+
+void MotionBlur::updateFrameWeights() {
+    size_t frameCount = m_frameHistory.size();
+    if (frameCount == 0) return;
+
+    m_frameWeights.resize(frameCount);
+
+    // ガウシアン分布に基づいた重み付け
+    // 新しいフレーム（最後）ほど高い重みを持つ
+    float sigma = frameCount / 2.5f;
+    float totalWeight = 0.f;
+
+    for (size_t i = 0; i < frameCount; ++i) {
+        float distance = static_cast<float>(frameCount - 1 - i);
+        float weight = expf(-(distance * distance) / (2.f * sigma * sigma));
+        m_frameWeights[i] = weight;
+        totalWeight += weight;
+    }
+
+    // 正規化
+    if (totalWeight > 0.f) {
+        for (auto& weight : m_frameWeights) {
+            weight /= totalWeight;
+        }
+    }
 }
 
 void MotionBlur::onEnable() {
@@ -63,34 +90,46 @@ void MotionBlur::onRenderOverlay(Event& genericEv) {
     float opacityValue = std::get<FloatValue>(opacity);
 
     if (currentModeIsPixelAverage) {
-        if (!m_frameHistory.empty() && opacityValue > 0) {
-            float maxOpacity = opacityValue / 10.f;
-            if (maxOpacity > 1.f) maxOpacity = 1.f;
-
-            size_t frameCount = m_frameHistory.size();
-
-            for (size_t i = 0; i < frameCount; ++i) {
-                ID2D1Bitmap1* frame = m_frameHistory[i];
-                if (frame) {
-                    float ageFactor = frameCount > 1 ? static_cast<float>(i) / (frameCount - 1) : 1.f;
-                    float finalOpacity = maxOpacity * powf(ageFactor, 3.f);
-
-                    ctx->DrawBitmap(frame, &rc, finalOpacity);
-                }
-            }
-        }
-
+        // 現在のフレームを履歴に追加
         ID2D1Bitmap1* currentFrame = renderer->copyCurrentBitmap();
         if (currentFrame) {
             m_frameHistory.push_back(currentFrame);
         }
 
         size_t intensityValue = static_cast<size_t>(std::get<FloatValue>(intensity).getInt());
+        
+        // 強度が変更された場合、重みを再計算
+        if (intensityValue != m_lastIntensity) {
+            m_lastIntensity = intensityValue;
+            updateFrameWeights();
+        }
+
+        // フレーム履歴を制限
         while (m_frameHistory.size() > intensityValue) {
             SafeRelease(&m_frameHistory.front());
             m_frameHistory.erase(m_frameHistory.begin());
         }
+
+        // 重みを再計算（フレーム数が変わった場合）
+        if (m_frameWeights.size() != m_frameHistory.size()) {
+            updateFrameWeights();
+        }
+
+        // ガウシアン重み付けでフレームを描画
+        if (!m_frameHistory.empty() && opacityValue > 0) {
+            float maxOpacity = opacityValue / 10.f;
+            if (maxOpacity > 1.f) maxOpacity = 1.f;
+
+            for (size_t i = 0; i < m_frameHistory.size(); ++i) {
+                ID2D1Bitmap1* frame = m_frameHistory[i];
+                if (frame && i < m_frameWeights.size()) {
+                    float finalOpacity = maxOpacity * m_frameWeights[i];
+                    ctx->DrawBitmap(frame, &rc, finalOpacity);
+                }
+            }
+        }
     } else {
+        // シングルフレームモード：より滑らかなブレンド
         if (m_previousFrameBitmap) {
             float blendOpacity = opacityValue / 12.f;
             if (blendOpacity > 1.f) blendOpacity = 1.f;

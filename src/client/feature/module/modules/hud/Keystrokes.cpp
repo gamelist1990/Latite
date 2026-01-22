@@ -133,6 +133,14 @@ void Keystrokes::render(DrawUtil& dc, bool, bool inEditor) {
 	pos.x += (drawKeystroke(dc, pos, keystrokes[1]).x + pad) * 2.f; // a
 	pos = pos + (drawKeystroke(dc, pos, keystrokes[3]));
 
+	int cpsL = 0;
+	int cpsR = 0;
+	if (!inEditor) {
+		auto mod = Latite::getModuleManager().find("CPSLimiter");
+		cpsL = (mod && mod->isEnabled() ? Latite::get().getTimings().getAllowedCPSL() : Latite::get().getTimings().getCPSL());
+		cpsR = (mod && mod->isEnabled() ? Latite::get().getTimings().getAllowedCPSR() : Latite::get().getTimings().getCPSR());
+	}
+
 	// Mouse Buttons
 
 	if (std::get<BoolValue>(this->mouseButtons)) {
@@ -148,8 +156,8 @@ void Keystrokes::render(DrawUtil& dc, bool, bool inEditor) {
 			std::wstring str = L"LMB";
 
 			if (std::get<BoolValue>(cps)) {
-				str += L"\n" + std::to_wstring(Latite::get().getTimings().getCPSL()) + L" CPS";
-			}
+				str += L"\n" + std::to_wstring(cpsL) + L" CPS";
+			} 
 
 			dc.drawText(mb, str, btn.textCol, Renderer::FontSelection::SecondaryLight, std::get<FloatValue>(textSize), DWRITE_TEXT_ALIGNMENT_CENTER, DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 			if (std::get<BoolValue>(border)) {
@@ -165,8 +173,8 @@ void Keystrokes::render(DrawUtil& dc, bool, bool inEditor) {
 			std::wstring str = L"RMB";
 
 			if (std::get<BoolValue>(cps)) {
-				str += L"\n" + std::to_wstring(Latite::get().getTimings().getCPSR()) + L" CPS";
-			}
+				str += L"\n" + std::to_wstring(cpsR) + L" CPS";
+			} 
 
 			dc.drawText(mb, str, btn.textCol, Renderer::FontSelection::SecondaryLight, std::get<FloatValue>(textSize), DWRITE_TEXT_ALIGNMENT_CENTER, DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 			if (std::get<BoolValue>(border)) {
@@ -199,13 +207,6 @@ void Keystrokes::render(DrawUtil& dc, bool, bool inEditor) {
 		pos.y += shiftBox.getHeight();
 	}
 
-	int cpsL = 0;
-	int cpsR = 0;
-
-	if (!inEditor) {
-		cpsL = Latite::get().getTimings().getCPSL();
-		cpsR = Latite::get().getTimings().getCPSR();
-	}
 
 	this->rect.right = rect.left + pos.x;
 	this->rect.bottom = rect.top + pos.y;

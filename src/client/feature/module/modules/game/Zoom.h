@@ -31,4 +31,5 @@ private:
 	float activeModifier = 1.f;
 	float modifyTo = 1.f;
 	bool shouldZoom = false;
+	bool zoomDirty = false;
 };

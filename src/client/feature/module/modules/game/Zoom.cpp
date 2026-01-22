@@ -2,6 +2,7 @@
 #include "Zoom.h"
 #include "client/Latite.h"
 #include "client/render/Renderer.h"
+#include "client/config/ConfigManager.h"
 
 Zoom::Zoom() : Module("Zoom", LocalizeString::get("client.module.zoom.name"),
                       LocalizeString::get("client.module.zoom.desc"), GAME, nokeybind) {
@@ -32,8 +33,14 @@ Zoom::Zoom() : Module("Zoom", LocalizeString::get("client.module.zoom.name"),
 
 void Zoom::onRenderLevel(Event& evGeneric) {
 	auto& ev = reinterpret_cast<RenderLevelEvent&>(evGeneric);
-	if (!shouldZoom)
+	if (!shouldZoom) {
+		if (zoomDirty) {
+			Latite::getConfigManager().saveCurrentConfig();
+
+			zoomDirty = false;
+		}
 		zoomModifier = 0.f;
+	}
 
 	modifyTo = std::clamp(shouldZoom ? std::get<FloatValue>(modifier).value + zoomModifier : 1.f, 1.f, 60.f);
 
@@ -54,7 +61,17 @@ void Zoom::onKeyUpdate(Event& evGeneric) {
 	auto& ev = reinterpret_cast<KeyUpdateEvent&>(evGeneric);
 	if (ev.inUI()) return;
 	if (ev.getKey() == std::get<KeyValue>(this->zoomKey)) {
-		this->shouldZoom = ev.isDown();
+		if (ev.isDown()) {
+			this->shouldZoom = true;
+		}
+		else {
+			// zoom key released — persist any scroll-adjusted base
+			if (this->zoomDirty) {
+				Latite::getConfigManager().saveCurrentConfig();
+				this->zoomDirty = false;
+			}
+			this->shouldZoom = false;
+		}
 	}
 }
 
@@ -62,8 +79,14 @@ void Zoom::onClickUpdate(Event& evGeneric) {
 	auto& ev = reinterpret_cast<ClickEvent&>(evGeneric);
 
 	if (ev.getMouseButton() == 4 /* scroll */ && this->shouldZoom) {
-		// later half of this line clamps scrolling
-		zoomModifier += static_cast<float>(ev.getWheelDelta()) < 0 ? -1 : 1;
+		const float delta = static_cast<float>(ev.getWheelDelta()) < 0 ? -1.f : 1.f;
+		auto& base = std::get<FloatValue>(this->modifier);
+		const float newBase = std::clamp(base.value + delta, 1.f, 50.f);
+		if (newBase != base.value) {
+			base.value = newBase;
+			zoomModifier = 0.f; // make scroll immediately relative to new base
+			zoomDirty = true; // persist when zooming ends
+		}
 		ev.setCancelled(true);
 	}
 }
