@@ -464,6 +464,20 @@
         "client.module.cpsLimiter.targetState1.name": "[MISSING TRANSLATION] Right",
         "client.module.cpsLimiter.targetState2.name": "[MISSING TRANSLATION] Both",
         "client.module.tabList.colorCodes.name": "[MISSING TRANSLATION] Parse color codes",
-        "client.module.tabList.colorCodes.desc": "[MISSING TRANSLATION] When enabled, parse and render Minecraft-style color codes (e.g. §a) in player names."
+        "client.module.tabList.colorCodes.desc": "[MISSING TRANSLATION] When enabled, parse and render Minecraft-style color codes (e.g. §a) in player names.",
+        "client.module.destroyProgress.name": "[MISSING TRANSLATION] Destroy Progress",
+        "client.module.destroyProgress.desc": "[MISSING TRANSLATION] Render an animated inner box for the block you are mining; expands to full block size when breaking completes.",
+        "client.module.destroyProgress.renderThrough.name": "[MISSING TRANSLATION] Render Through",
+        "client.module.destroyProgress.renderThrough.desc": "[MISSING TRANSLATION] Render the progress box through walls.",
+        "client.module.destroyProgress.transparent.name": "[MISSING TRANSLATION] Transparent",
+        "client.module.destroyProgress.transparent.desc": "[MISSING TRANSLATION] Use a translucent material for the box.",
+        "client.module.destroyProgress.filled.name": "[MISSING TRANSLATION] Filled",
+        "client.module.destroyProgress.filled.desc": "[MISSING TRANSLATION] Fill the faces of the inner box instead of only drawing edges.",
+        "client.module.destroyProgress.color.name": "[MISSING TRANSLATION] Color",
+        "client.module.destroyProgress.color.desc": "[MISSING TRANSLATION] Color of the progress box.",
+        "client.module.destroyProgress.opacity.name": "[MISSING TRANSLATION] Opacity",
+        "client.module.destroyProgress.opacity.desc": "[MISSING TRANSLATION] Opacity of the progress box.",
+        "client.module.destroyProgress.speed.name": "[MISSING TRANSLATION] Animation Speed",
+        "client.module.destroyProgress.speed.desc": "[MISSING TRANSLATION] How fast the box scales to match break progress."
     }
 }

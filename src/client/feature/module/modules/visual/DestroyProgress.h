@@ -19,4 +19,12 @@ private:
     BlockPos m_lastPos{ INT_MIN, INT_MIN, INT_MIN };
     float m_animProgress = 0.f;
     float m_popTimer = 0.f; // short pop animation after break complete
+
+    // resilience: keep last valid blockpos for a few frames when HitResult is transiently invalid
+    int m_lastPosHold = 0; // frames remaining to keep m_lastPos
+    static constexpr int kLastPosHoldFrames = 6;
+
+    // log throttling to avoid spamming latest.log when HitResult is noisy
+    int m_logSuppress = 0; // frames to suppress repeated warnings
+    static constexpr int kLogSuppressFrames = 30;
 };

@@ -3,10 +3,9 @@
 
 // Put commonly included files here to speed up the build process
 
+#include <Windows.h>
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
-
-#include <Windows.h>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -20,6 +19,8 @@
 #include <chrono>
 #include <format>
 #include <array>
+#include <cmath>
+#include <regex>
 
 using namespace std::chrono_literals;
 
@@ -57,6 +58,7 @@ using nlohmann::json;
 #include "mc/common/client/player/LocalPlayer.h"
 #include "mc/common/world/Minecraft.h"
 #include "mc/common/world/level/Dimension.h"
+#include "mc/common/world/level/HitResult.h"
 #include "mc/Addresses.h"
 #include "mc/common/client/gui/GuiData.h"
 #include "mc/common/network/RakNetConnector.h"

@@ -34,6 +34,11 @@ void TabList::onRenderOverlay(Event& evG) {
 		txt = util::StrToWStr(lvl->getLevelName());
 	}
 
+	// 人数表示 (x) をサーバー名の横に追加
+	wchar_t buf[64];
+	swprintf(buf, 64, L" (%zu)", size);
+	txt += buf;
+
 	constexpr auto font = Renderer::FontSelection::PrimaryRegular;
 	float sectionHeight = textP * 1.3f;
 

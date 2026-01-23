@@ -7,7 +7,7 @@ class Timings final
 {
 	std::chrono::high_resolution_clock::time_point lastFPSTime{};
 public:
-	Timings() = default;
+	Timings();
 	Timings(Timings&) = delete;
 	Timings(Timings&&) = delete;
 	int getPerSecond(std::vector<std::chrono::steady_clock::time_point>& list);
@@ -16,7 +16,7 @@ public:
 	void update();
 	void onClick(int mb, bool isDown);
 
-	[[nodiscard]] int getFPS() { return fps; }
+	[[nodiscard]] int getFPS() { return fps < refreshRate ? fps : refreshRate; }
 	[[nodiscard]] int getCPSL() { return cpsL; }
 	[[nodiscard]] int getCPSR() { return cpsR; }
 	[[nodiscard]] float getFrameTime() { return frameTime; }
@@ -45,6 +45,8 @@ private:
 	std::vector<std::chrono::steady_clock::time_point> allowedCpsRV;
 	int allowedCpsL = 0;
 	int allowedCpsR = 0;
+
+	int refreshRate = 60;
 
 public:
 	// Record a click that was allowed by input-path (e.g. CPSLimiter)

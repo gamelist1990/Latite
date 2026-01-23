@@ -462,6 +462,20 @@
         "client.module.cpsLimiter.target.desc": "制限するマウスボタン",
         "client.module.cpsLimiter.targetState0.name": "左クリック",
         "client.module.cpsLimiter.targetState1.name": "右クリック",
-        "client.module.cpsLimiter.targetState2.name": "両方"
+        "client.module.cpsLimiter.targetState2.name": "両方",
+        "client.module.destroyProgress.name": "DestroyProgress",
+        "client.module.destroyProgress.desc": "採掘しているブロックの内側にアニメーション付きのボックスを表示します。破壊が完了するとボックスはブロック全体のサイズに拡大します。",
+        "client.module.destroyProgress.renderThrough.name": "貫通描画",
+        "client.module.destroyProgress.renderThrough.desc": "壁を通して進行度ボックスを描画します。",
+        "client.module.destroyProgress.transparent.name": "透明",
+        "client.module.destroyProgress.transparent.desc": "ボックスに半透明のマテリアルを使用します。",
+        "client.module.destroyProgress.filled.name": "塗りつぶし",
+        "client.module.destroyProgress.filled.desc": "内側のボックスの面を塗りつぶします。エッジのみの描画ではありません。",
+        "client.module.destroyProgress.color.name": "色",
+        "client.module.destroyProgress.color.desc": "進行度ボックスの色。",
+        "client.module.destroyProgress.opacity.name": "不透明度",
+        "client.module.destroyProgress.opacity.desc": "進行度ボックスの不透明度。",
+        "client.module.destroyProgress.speed.name": "アニメーション速度",
+        "client.module.destroyProgress.speed.desc": "ボックスが破壊進行度に合わせて拡大する速度。"
     }
 }

@@ -1,5 +1,16 @@
 #include "pch.h"
 #include "Timings.h"
+#include <Windows.h>
+
+Timings::Timings() {
+	DEVMODE dm = { 0 };
+	dm.dmSize = sizeof(dm);
+	if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dm)) {
+		refreshRate = dm.dmDisplayFrequency;
+	} else {
+		refreshRate = 60; // default fallback
+	}
+}
 
 int Timings::getPerSecond(std::vector<std::chrono::steady_clock::time_point>& list)
 {
@@ -29,6 +40,12 @@ void Timings::update()
 		fps = frames;
 		frames = 0;
 		lastFPSTime = std::chrono::high_resolution_clock::now();
+		// Update refresh rate periodically
+		DEVMODE dm = { 0 };
+		dm.dmSize = sizeof(dm);
+		if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dm)) {
+			refreshRate = dm.dmDisplayFrequency;
+		}
 	}
 	frames++;
 
