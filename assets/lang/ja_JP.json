@@ -373,7 +373,7 @@
         "client.module.hitping.cooldownEnabled.name": "クールダウンを有効にする",
         "client.module.hitping.cooldownEnabled.desc": "短い連打で何度も鳴るのを防ぎます。",
         "client.module.hitping.cooldownMs.name": "クールダウン (ms)",
-        "client.module.hitping.cooldownMs.desc": "ヒット音の最小間隔 (ミリ秒)。"
+        "client.module.hitping.cooldownMs.desc": "ヒット音の最小間隔 (ミリ秒)。",
         "client.module.blockOutline.name": "ブロックオーバーレイ",
         "client.module.blockOutline.renderThrough.name": "透過してレンダリング",
         "client.module.blockOutline.transparent.name": "透明",

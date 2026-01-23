@@ -383,7 +383,7 @@
     "client.module.hitping.cooldownEnabled.desc": "Prevent the sound from playing repeatedly in rapid succession.",
     "client.module.hitping.cooldownMs.name": "Cooldown (ms)",
     "client.module.hitping.cooldownMs.desc": "Minimum time between hit sounds (milliseconds).",
-    "client.module.hitping.sound.default": "random.pop"
+    "client.module.hitping.sound.default": "random.pop",
     "client.module.blockOutline.name": "Block Overlay",
     "client.module.blockOutline.renderThrough.name": "Render Through",
     "client.module.blockOutline.transparent.name": "Transparent",

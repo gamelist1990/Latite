@@ -51,7 +51,8 @@ void ToggleSprintSneak::onTick(Event& evGeneric) {
 				input->sprinting = true;
 			}
 		}*/
-		input->rawInputState.sprintDown = true;
+		// sprint input is injected in afterMove() where the move handler is authoritative —
+		// setting rawInputState here (onTick) races with the engine's input update and had no effect.
 		if (toggleSprinting) {
 			right = L"Toggled";
 			if (std::get<BoolValue>(alwaysSprint)) right = L"Always";
@@ -86,14 +87,17 @@ void ToggleSprintSneak::beforeMove(Event& evGeneric) {
 void ToggleSprintSneak::afterMove(Event& evGeneric) {
 	auto& ev = reinterpret_cast<AfterMoveEvent&>(evGeneric);
 	realSneaking = ev.getMoveInputHandler()->rawInputState.sneakDown;
-	//realSprint = ev.getMoveInputHandler()->sprintKey;
+	// Keep realSprint in sync with the authoritative move handler (use rawInputState)
+	realSprint = ev.getMoveInputHandler()->rawInputState.sprintDown;
 	if (std::get<BoolValue>(sneak) && toggleSneaking) {
 		ev.getMoveInputHandler()->rawInputState.sneakDown = true;
 	}
 
-	/*if (std::get<BoolValue>(sprint) && toggleSprinting) {
-		ev.getMoveInputHandler()->sprintKey = true;
-	}*/
+	// Inject sprint into the authoritative move handler here (afterMove is the correct hook).
+	// Setting rawInputState.sprintDown in onTick races with the engine's input update and had no effect.
+	if ((std::get<BoolValue>(sprint) && toggleSprinting) || realSprint) {
+		ev.getMoveInputHandler()->rawInputState.sprintDown = true;
+	}
 }
 
 void ToggleSprintSneak::onKey(Event& evGeneric) {
