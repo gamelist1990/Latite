@@ -476,6 +476,29 @@
         "client.module.destroyProgress.opacity.name": "不透明度",
         "client.module.destroyProgress.opacity.desc": "進行度ボックスの不透明度。",
         "client.module.destroyProgress.speed.name": "アニメーション速度",
-        "client.module.destroyProgress.speed.desc": "ボックスが破壊進行度に合わせて拡大する速度。"
+        "client.module.destroyProgress.speed.desc": "ボックスが破壊進行度に合わせて拡大する速度。",
+
+        "client.module.trails.name": "軌跡",
+        "client.module.trails.desc": "足元に線を引き、移動した経路を表示します。",
+        "client.module.trails.renderThrough.name": "貫通描画",
+        "client.module.trails.color.name": "色",
+        "client.module.trails.color.desc": "軌跡の色。",
+        "client.module.trails.opacity.name": "不透明度",
+        "client.module.trails.opacity.desc": "軌跡の不透明度。",
+        "client.module.trails.sampleInterval.name": "サンプリング間隔",
+        "client.module.trails.sampleInterval.desc": "位置を記録する間隔（秒）。",
+        "client.module.trails.maxPoints.name": "最大ポイント数",
+        "client.module.trails.maxPoints.desc": "保持する最大ポイント数（0＝無制限）。",
+        "client.module.trails.clear.name": "クリア",
+        "client.module.trails.clear.desc": "現在の軌跡を消去します。",
+        "client.module.trails.fade.name": "フェード",
+        "client.module.trails.fade.desc": "古いポイントを徐々に透明化します。",
+        "client.module.trails.tailOpacity.name": "テール不透明度",
+        "client.module.trails.tailOpacity.desc": "最古のポイントの最小不透明度（0 = 見えない）。",
+
+        "client.module.fastInventory.name": "Fast Inventory",
+        "client.module.fastInventory.desc": "サーバー側のインベントリを開いたまま、クライアント UI を即時で閉じてインベントリ操作を高速化します。",
+        "client.module.fastInventory.restricted.name": "制限モード",
+        "client.module.fastInventory.restricted.desc": "サーバー側で禁止されている場合、この機能を無効にします。"
     }
 }

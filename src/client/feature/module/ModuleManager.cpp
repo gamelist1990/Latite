@@ -27,6 +27,7 @@
 #include "modules/visual/DestroyProgress.h"
 #include "modules/visual/Hitboxes.h"
 #include "modules/visual/BlockOutline.h"
+#include "modules/visual/Trails.h"
 
 #include "modules/hud/FPSCounter.h"
 #include "modules/hud/CPSCounter.h"
@@ -53,6 +54,7 @@
 #include "modules/hud/FrameTimeDisplay.h"
 
 #include "client/event/events/KeyUpdateEvent.h"
+#include "modules/misc/FastInventory.h"
 
 ModuleManager::ModuleManager() {
 #ifdef LATITE_DEBUG
@@ -79,6 +81,8 @@ ModuleManager::ModuleManager() {
 	this->items.push_back(std::make_shared<BehindYou>());
 	this->items.push_back(std::make_shared<ChunkBorders>());
 	this->items.push_back(std::make_shared<DestroyProgress>());
+	this->items.push_back(std::make_shared<Trails>());
+	this->items.push_back(std::make_shared<FastInventory>());
 	this->items.push_back(std::make_shared<ArmorHUD>());
 	this->items.push_back(std::make_shared<MovablePaperdoll>());
 	this->items.push_back(std::make_shared<Hitboxes>());

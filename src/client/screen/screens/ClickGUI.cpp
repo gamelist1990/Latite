@@ -1269,6 +1269,93 @@ float ClickGUI::drawSetting(Setting* set, SettingGroup*, Vec2 const& pos, D2DUti
 		return colRect.bottom;
 	}
 	break;
+	case Setting::Type::Int:
+	{
+		float textWidth = fTextWidth * size;
+		float sliderHeight = (rect.getHeight() * 0.017730f);
+
+		float textSz = textSize;
+
+		RectF textRect = { pos.x, pos.y, pos.x + textWidth, pos.y + sliderHeight };
+		RectF rtTextRect = textRect.translate(0.f, -(textRect.getHeight() / 2.f));
+		std::wstringstream namew;
+		namew << set->getDisplayName();
+		dc.drawText(rtTextRect, namew.str(), d2d::Color(1.f, 1.f, 1.f, 1.f), FontSelection::PrimarySemilight, textSz, DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+		float padToSlider = rect.getHeight() * 0.01063f;
+
+		float sliderTop = textRect.top + sliderHeight * 0.16f;
+		RectF sliderRect = { textRect.right, sliderTop, textRect.left + size - (0.1947f * size), sliderTop + sliderHeight };
+
+		float innerPad = 0.2f * sliderRect.getHeight();
+		RectF innerSliderRect = { sliderRect.left + innerPad, sliderRect.top + innerPad, sliderRect.right - innerPad, sliderTop + (rect.getHeight() * 0.017730f) - innerPad };
+
+		std::wstringstream valuew;
+		valuew << std::get<IntValue>(*set->value).value;
+
+		RectF rightRect = { sliderRect.right, sliderRect.top, pos.x + size, sliderRect.bottom };
+		RectF rtRect = rightRect.translate(0.f, -(sliderRect.getHeight() / 2.f));
+		dc.drawText(rtRect, valuew.str(), d2d::Color(1.f, 1.f, 1.f, 1.f), Renderer::FontSelection::PrimarySemilight, sliderHeight * 1.4f, DWRITE_TEXT_ALIGNMENT_CENTER, DWRITE_PARAGRAPH_ALIGNMENT_NEAR, false);
+
+		int min = std::get<IntValue>(set->min).value;
+		int max = std::get<IntValue>(set->max).value;
+		int interval = std::get<IntValue>(set->interval).value;
+		if (interval <= 0) interval = 1;
+
+		if (!set->desc().empty() && (shouldSelect(textRect, cursorPos) || shouldSelect(sliderRect, cursorPos))) {
+			setTooltip(set->desc());
+		}
+
+		if (!this->activeSetting) {
+			if (justClicked[0] && shouldSelect(sliderRect, cursorPos)) {
+				activeSetting = set;
+				playClickSound();
+			}
+		}
+		else {
+			if (activeSetting == set) {
+				if (!mouseButtons[0]) activeSetting = nullptr;
+
+				float find = (cursorPos.x - sliderRect.left) / sliderRect.getWidth();
+				float percent = find;
+
+				float span = static_cast<float>(max - min);
+				float newValf = percent * span + static_cast<float>(min);
+				newValf = std::clamp(newValf, static_cast<float>(min), static_cast<float>(max));
+
+				// latch to nearest interval
+				newValf = std::round(newValf / static_cast<float>(interval)) * static_cast<float>(interval);
+				int newVal = static_cast<int>(newValf);
+
+				std::get<IntValue>(*set->value).value = newVal;
+				set->update();
+				set->userUpdate();
+			}
+		}
+
+		float percent = 0.f;
+		int cur = std::get<IntValue>(*set->value).value;
+		if (max > min) percent = static_cast<float>(cur - min) / static_cast<float>(max - min);
+		float oRight = innerSliderRect.right;
+		float oLeft = innerSliderRect.left;
+		float newRight = 0.f;
+
+		if (activeSetting == set) {
+			newRight = cursorPos.x;
+		}
+		else {
+			newRight = sliderRect.left + (sliderRect.getWidth() * percent);
+		}
+		innerSliderRect.right = std::clamp(newRight, oLeft, oRight);
+
+		dc.fillRoundedRectangle(sliderRect, d2d::Color::RGB(0x8D, 0x8D, 0x8D).asAlpha(0.11f), sliderRect.getHeight() / 2.f);
+		dc.fillRoundedRectangle(innerSliderRect, accentColor, innerSliderRect.getHeight() / 2.f);
+
+		dc.brush->SetColor(d2d::Color(0xB9, 0xB9, 0xB9).get());
+		dc.ctx->FillEllipse(D2D1::Ellipse({ innerSliderRect.right, sliderRect.centerY() }, sliderRect.getHeight() * 0.6f, sliderRect.getHeight() * 0.6f), dc.brush);
+		return rtTextRect.top + dc.getTextSize(namew.str(), Renderer::FontSelection::PrimarySemilight, textSz, false, true, Vec2{ rtTextRect.getWidth(), rtTextRect.getHeight() }).y;
+	}
+	break;
+
 	case Setting::Type::Float:
 	{
 		float textWidth = fTextWidth * size;

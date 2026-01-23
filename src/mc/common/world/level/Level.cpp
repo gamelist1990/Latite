@@ -52,7 +52,6 @@ SDK::HitResult *SDK::Level::getHitResult()
 	static bool loggedFallback = false;
 	if (!loggedFallback)
 	{
-		Logger::Info("Level::getHitResult: member access failed or not sane; using vfunc index=0x{:X}", index);
 		loggedFallback = true;
 	}
 	return hr;
