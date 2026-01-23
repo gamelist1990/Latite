@@ -18,6 +18,7 @@
 #include "modules/game/Freelook.h"
 #include "modules/game/CPSLimiter.h"
 #include "modules/game/AutoGG.h"
+#include "modules/game/Hitping.h"
 
 #include "modules/visual/Fullbright.h"
 #include "modules/visual/MotionBlur.h"
@@ -102,6 +103,7 @@ ModuleManager::ModuleManager() {
 	this->items.push_back(std::make_shared<CustomCoordinates>());
 	this->items.push_back(std::make_shared<MovableCoordinates>());
 	this->items.push_back(std::make_shared<AutoGG>());
+	this->items.push_back(std::make_shared<Hitping>());
 	this->items.push_back(std::make_shared<FrameTimeDisplay>());
 	this->items.push_back(std::make_shared<BlockGame>());
 
