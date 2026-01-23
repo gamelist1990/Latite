@@ -189,6 +189,7 @@ DWORD __stdcall startThread(HINSTANCE dll) {
         MVSIG(Offset::LevelRendererPlayer_fovX),
         MVSIG(Offset::LevelRendererPlayer_origin),
         MVSIG(Offset::MinecraftGame_cursorGrabbed),
+        MVSIG(Level_getRuntimeActorList),
         MVSIG(Components::moveInputComponent),
         MVSIG(Options_getGamma),
         MVSIG(Options_getPerspective),

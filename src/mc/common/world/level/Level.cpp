@@ -8,14 +8,30 @@ void SDK::Level::playSoundEvent(std::string const &text, Vec3 const &pos, float 
 	memory::callVirtual<void>(this, 0xB6, text, pos, vol, pitch);
 }
 
-std::vector<SDK::Actor *> SDK::Level::getRuntimeActorList()
-{
-	std::vector<Actor *> list;
-	static int index = mvGetOffset<0x13C, 0x13B, 0x13A, 0x139, 0x135, 0x135, 0x136, 0x134, 0x132, 0x134, 0x117, 0x117, 0x116, 0x125, 0x125, 0x12D, 0x13C>();
+std::vector<SDK::Actor*> SDK::Level::getRuntimeActorList() {
+    std::vector<Actor*> list;
 
-	// TODO: this might return a vector too?
-	memory::callVirtual<void, std::vector<Actor *> &>(this, index, list);
-	return list;
+    // 1) 優先: シグネチャ経由の直接呼び出し（安全チェック付き）
+    if (Signatures::Level_getRuntimeActorList.resolve() && Signatures::Level_getRuntimeActorList.result) {
+        auto fn = reinterpret_cast<void(*)(Level*, std::vector<Actor*>&)>(Signatures::Level_getRuntimeActorList.result);
+        fn(this, list);
+
+        // cheap sanity checks
+        if (list.size() && list.size() < 4096) {
+            bool ok = true;
+            for (auto *a : list) {
+                if (!a) { ok = false; break; }
+                // 必要なら追加のアドレス範囲チェックを入れてください
+            }
+            if (ok) return list;
+        }
+        list.clear();
+    }
+
+    // 2) フォールバック: 既存の vtable ベース呼び出し（互換性確保）
+    static int index = mvGetOffset<0x13C, 0x13B, 0x13A, 0x139, 0x135, 0x135, 0x136, 0x134, 0x132, 0x134, 0x117, 0x117, 0x116, 0x125, 0x125, 0x12D, 0x13C>();
+    memory::callVirtual<void, std::vector<Actor*>&>(this, index, list);
+    return list;
 }
 
 std::unordered_map<UUID, SDK::PlayerListEntry> *SDK::Level::getPlayerList()

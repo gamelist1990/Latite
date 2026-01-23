@@ -30,6 +30,8 @@ public:
 			"F3 0F 58 B3 ? ? ? ? 48 8B 8B"_sig,
 			"LevelRendererPlayer->origin"};
 
+		
+
 	};
 	struct Misc {
 		inline static SigImpl clientInstance{};
@@ -114,6 +116,10 @@ public:
 	inline static SigImpl LevelRenderer_renderLevel{[](memory::signature_store&, uintptr_t res) { return res; },
 		"48 8B C4 48 89 58 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 0F 29 70 ? 0F 29 78 ? 44 0F 29 40 ? 44 0F 29 48 ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 4D 8B E8 4C 8B E2 4C 8B F9"_sig,
 		"LevelRenderer::renderLevel"};
+
+	inline static SigImpl Level_getRuntimeActorList{[](memory::signature_store& store, uintptr_t res){ return res; },
+            "40 53 48 83 EC 30 48 81 C1 ?? ?? ?? ?? 48 8B DA E8 ?? ?? ?? ?? 48 8B C3 48 83 C4 30 5B C3"_sig,
+            "Level::getRuntimeActorList"};
 
 	inline static SigImpl MainWindow__windowProcCallback{[](memory::signature_store&, uintptr_t res) { return res; },
 		"40 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 4D 8B F1 49 8B F8 8B F2"_sig,

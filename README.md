@@ -3,7 +3,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/Imrglop/Latite-Releases)](https://github.com/Imrglop/Latite-Releases/releases/latest)
 [![Latite Nightly](https://github.com/LatiteClient/Latite/actions/workflows/nightly-build.yml/badge.svg)](https://github.com/LatiteClient/Latite/actions/workflows/nightly-build.yml)
 
-**Latite Client** is a legitimate DLL modification for Minecraft Windows 10/11 Edition featuring a clean UI, 30+ customizable mods, and a powerful plugin system.
+**Latite Client** is a legitimate DLL modification for Minecraft Windows 10/11 Edition (supports versions 1.16.40 to 1.21.130) featuring a clean UI, 30+ customizable mods, and a powerful plugin system.
 
 ![Demo image](https://github.com/user-attachments/assets/0862d42f-ac15-4bd6-9395-536ce27d7ed4)
 
