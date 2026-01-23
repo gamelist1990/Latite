@@ -84,6 +84,7 @@ ModuleManager::ModuleManager() {
 	this->items.push_back(std::make_shared<DestroyProgress>());
 	this->items.push_back(std::make_shared<Trails>());
 	this->items.push_back(std::make_shared<FastInventory>());
+	this->items.push_back(std::make_shared<ForceCloseOreUI>());
 	this->items.push_back(std::make_shared<ArmorHUD>());
 	this->items.push_back(std::make_shared<MovablePaperdoll>());
 	this->items.push_back(std::make_shared<Hitboxes>());
